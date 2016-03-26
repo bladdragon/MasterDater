@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MasterDater</string>
     <string name="action_calendar">My Calendar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Action Settings</string>
 </resources>
