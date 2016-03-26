@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">MasterDater</string>
     <string name="action_calendar">My Calendar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
     <string name="add_by_nfc">Add by NFC</string>
     <string name="search_near_me">Search near me</string>
+
 </resources>
