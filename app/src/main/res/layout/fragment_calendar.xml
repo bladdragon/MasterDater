@@ -3,21 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.austin.masterdater.NFCFragment">
-
-
-<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text= "@string/add_by_nfc"
-        android:id="@+id/addByMe_textView"
-        android:layout_gravity="center_horizontal"/>
+    tools:context="com.example.austin.masterdater.CalendarFragment">
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_near_me"
-        android:id="@+id/searchNearMe_button"
-        android:layout_gravity="center_horizontal" />
+        android:text="contacts"
+        android:id="@+id/contacts" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nfc"
+        android:id="@+id/nfc" />
 </LinearLayout>

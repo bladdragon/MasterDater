@@ -1,9 +1,6 @@
 package com.example.austin.masterdater;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,7 +12,7 @@ import android.widget.EditText;
 /**
  * Created by Austin on 3/26/2016.
  */
-public class CalendarFragment extends Fragment {
+public class ShareByContactsFragment extends Fragment {
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -32,7 +29,7 @@ public class CalendarFragment extends Fragment {
     private Button contactsButton;
 
 
-    public CalendarFragment() {
+    public ShareByContactsFragment() {
         // Required empty public constructor
     }
 
@@ -42,10 +39,10 @@ public class CalendarFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment CalendarFragment.
+     * @return A new instance of fragment ShareByContactsFragment.
      */
-    public static CalendarFragment newInstance(String param1, String param2) {
-        CalendarFragment fragment = new CalendarFragment();
+    public static ShareByContactsFragment newInstance(String param1, String param2) {
+        ShareByContactsFragment fragment = new ShareByContactsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,29 +65,8 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        nfcButton = (Button) view.findViewById(R.id.nfc);
-        nfcButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer2, NFCFragment.newInstance(null, null))
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        contactsButton = (Button) view.findViewById(R.id.contacts);
-        contactsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer2, ShareByContactsFragment.newInstance(null, null))
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+       
         return view;
     }
 
