@@ -22,7 +22,13 @@
             android:name=".CalendarActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/action_calendar"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.austin.masterdater.CalendarActivity" />
+
+
+        </activity>
 
     </application>
 

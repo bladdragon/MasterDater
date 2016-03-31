@@ -2,9 +2,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".LoginActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/menuSort"
+        android:showAsAction="always"
+        android:actionLayout="@layout/activity_calendar"  />
+
+    <item
+        android:id="@+id/action_NFC"
         android:orderInCategory="100"
-        android:title="ActionSettings"
+        android:title="Near Field"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_contacts"
+        android:orderInCategory="100"
+        android:title="Contacts"
+        app:showAsAction="never"/>
+
 </menu>
