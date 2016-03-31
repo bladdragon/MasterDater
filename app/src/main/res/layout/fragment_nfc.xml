@@ -3,29 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.austin.masterdater.NFCFragment">
+    tools:context="com.example.austin.masterdater.NFCFragment"
+    android:orientation="vertical">
 
 
-<TextView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text= "@string/add_by_nfc"
         android:id="@+id/addByMe_textView"
-        android:layout_gravity="center_horizontal"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText3"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:background="#d12929" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_near_me"
         android:id="@+id/searchNearMe_button"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp" />
 </LinearLayout>
