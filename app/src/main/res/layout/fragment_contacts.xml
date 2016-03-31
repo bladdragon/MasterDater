@@ -6,4 +6,14 @@
     tools:context="com.example.austin.masterdater.ShareByContactsFragment">
 
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="#cb2222" />
 </LinearLayout>

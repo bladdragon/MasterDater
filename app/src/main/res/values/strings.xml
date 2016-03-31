@@ -6,4 +6,9 @@
     <string name="add_by_nfc">Add by NFC</string>
     <string name="search_near_me">Search near me</string>
 
+    <string-array name="action_array">
+        <item>action_NFC</item>
+        <item>action_contacts</item>
+    </string-array>
+
 </resources>

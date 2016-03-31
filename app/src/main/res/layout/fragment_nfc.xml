@@ -14,6 +14,14 @@
         android:id="@+id/addByMe_textView"
         android:layout_gravity="center_horizontal"/>
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText3"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="#d12929" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

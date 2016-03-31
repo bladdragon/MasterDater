@@ -1,8 +1,10 @@
 package com.example.austin.masterdater;
 
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,13 @@ public class CalendarActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayHomeAsUpEnabled(true);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragmentContainer2, CalendarFragment.newInstance(null, null))
@@ -40,12 +49,30 @@ public class CalendarActivity  extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        switch (item.getItemId()) {
 
-        return super.onOptionsItemSelected(item);
+            case R.id.action_NFC:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer2, NFCFragment.newInstance(null, null))
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+
+            case R.id.action_contacts:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer2, ShareByContactsFragment.newInstance(null, null))
+                        .addToBackStack(null)
+                        .commit();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 }
