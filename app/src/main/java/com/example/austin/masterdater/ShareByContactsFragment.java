@@ -6,8 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by Austin on 3/26/2016.
@@ -19,6 +24,10 @@ public class ShareByContactsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private TextView addByContacts;
+    private ListView contactList;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -66,6 +75,15 @@ public class ShareByContactsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+
+        addByContacts = (TextView) view.findViewById(R.id.addByContacts_textView);
+        contactList = (ListView) view.findViewById(R.id.contacts_listView);
+        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO: add contact functionality here
+            }
+        });
        
         return view;
     }

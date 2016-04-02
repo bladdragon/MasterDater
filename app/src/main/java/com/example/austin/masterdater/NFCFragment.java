@@ -15,6 +15,8 @@ public class NFCFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private String mParam1;
+    private String mParam2;
 
     private TextView addByNFC;
     private Button searchNearMe;
@@ -35,13 +37,16 @@ public class NFCFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = null;
-        view = inflater.inflate(R.layout.fragment_nfc, container, false);
+        View view = inflater.inflate(R.layout.fragment_nfc, container, false);
 
         addByNFC = (TextView) view.findViewById(R.id.addByMe_textView);
         searchNearMe = (Button) view.findViewById(R.id.searchNearMe_button);
@@ -57,7 +62,7 @@ public class NFCFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //do NFC stuff here
+                //TODO: Add NFC functionality here
 
             }
         });
