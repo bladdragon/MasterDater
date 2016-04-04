@@ -1,12 +1,17 @@
 package com.example.austin.masterdater;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,6 +32,9 @@ public class ShareByContactsFragment extends Fragment {
 
     private TextView addByContacts;
     private ListView contactList;
+    private ArrayAdapter<String> contactAdapter;
+    private String[] contactStringArray;
+    private final int PICK_CONTACT = 100;
 
 
     // TODO: Rename and change types of parameters
@@ -68,6 +76,15 @@ public class ShareByContactsFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(intent, PICK_CONTACT);
+
+        /*Cursor cur = getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
+                null, null);
+
+        contactAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, contactStringArray);
+*/
     }
 
     @Override
@@ -88,5 +105,39 @@ public class ShareByContactsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        switch (reqCode) {
+            case (PICK_CONTACT) :
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri contactData = data.getData();
+                    Cursor c =  getActivity().getContentResolver().query(contactData, null, null, null, null);
+                    if (c.moveToFirst()) {
+                        String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                        String phoneNum;
+                        if (Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) >0) {
+                            phoneNum = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        }
+                        // TODO Whatever you want to do with the selected contact name.
+                    }
+                }
+                break;
+        }
+    }
+
+    /*private Cursor getContacts() {
+        // Run query
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        String[] projection =
+                new String[]{ ContactsContract.Contacts._ID,
+                        ContactsContract.Contacts.DISPLAY_NAME };
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME +
+                " COLLATE LOCALIZED ASC";
+        return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
+    }*/
 
 }
