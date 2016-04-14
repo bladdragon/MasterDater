@@ -3,17 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.austin.masterdater.ShareByContactsFragment">
+    tools:context="com.example.austin.masterdater.ShareByContactsFragment"
+    android:background="#3d4484">
 
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:background="#cb2222" />
 </LinearLayout>

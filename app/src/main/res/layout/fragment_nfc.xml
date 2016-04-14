@@ -4,8 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.austin.masterdater.NFCFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_weight="0.22" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,4 +31,5 @@
         android:id="@+id/searchNearMe_button"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp" />
+
 </LinearLayout>
