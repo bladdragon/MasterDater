@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.austin.masterdater.ShareByContactsFragment"
+<<<<<<< HEAD
     android:orientation="vertical">
 
 
@@ -22,4 +23,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/contacts_listView"
         android:layout_gravity="center_horizontal" />
+=======
+    android:background="#3d4484">
+
+
+>>>>>>> master
 </LinearLayout>

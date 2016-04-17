@@ -69,28 +69,28 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        nfcButton = (Button) view.findViewById(R.id.nfc);
-        nfcButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer2, NFCFragment.newInstance(null, null))
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-        contactsButton = (Button) view.findViewById(R.id.contacts);
-        contactsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer2, ShareByContactsFragment.newInstance(null, null))
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+//        nfcButton = (Button) view.findViewById(R.id.nfc);
+//        nfcButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragmentContainer2, NFCFragment.newInstance(null, null))
+//                        .addToBackStack(null)
+//                        .commit();
+//            }
+//        });
+//        contactsButton = (Button) view.findViewById(R.id.contacts);
+//        contactsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragmentContainer2, ShareByContactsFragment.newInstance(null, null))
+//                        .addToBackStack(null)
+//                        .commit();
+//            }
+//        });
         return view;
     }
 
