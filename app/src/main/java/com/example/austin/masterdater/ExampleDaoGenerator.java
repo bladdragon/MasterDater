@@ -10,7 +10,7 @@ import de.greenrobot.daogenerator.Schema;
 
 public class ExampleDaoGenerator {
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1, "com.cs407_android.masterdater"); //Scheme for GreenDAO ORM
+        Schema schema = new Schema(1, "example.austin.masterdater"); //Scheme for GreenDAO ORM
         createDB(schema);
         new DaoGenerator().generateAll(schema, "./app/src/main/java/");
         //where you want to store the generated classes.
