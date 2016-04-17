@@ -15,7 +15,7 @@
         android:text= "@string/add_by_nfc"
         android:id="@+id/addByMe_textView"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="125dp" />
 
     <Button
         android:layout_width="wrap_content"
