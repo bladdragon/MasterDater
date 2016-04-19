@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 /**
@@ -24,6 +26,11 @@ public class RegisterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private EditText userName;
+    private EditText userPass;
+    private EditText userPassConfirm;
+    private EditText phoneNumber;
+    private Button registerButton;
 
 
     public RegisterFragment() {
