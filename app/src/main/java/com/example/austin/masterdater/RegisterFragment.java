@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 
 /**
@@ -24,6 +27,15 @@ public class RegisterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String user;
+    private String pass;
+    private String passconf;
+    private String number;
+    private EditText userName;
+    private EditText userPass;
+    private EditText userPassConfirm;
+    private EditText phoneNumber;
+    private Button registerButton;
 
 
     public RegisterFragment() {
@@ -61,7 +73,33 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        registerButton = (Button) view.findViewById(R.id.confirmRegister);
+        userName = (EditText) view.findViewById(R.id.username);
+        phoneNumber = (EditText) view.findViewById(R.id.number);
+        userPass = (EditText) view.findViewById(R.id.password);
+        userPassConfirm = (EditText) view.findViewById(R.id.confirmPass);
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user = userName.getText().toString();
+                pass = userPass.getText().toString();
+                passconf = userPassConfirm.getText().toString();
+                number = phoneNumber.getText().toString();
+                if(pass.equals(passconf)) {
+                    //add user to server
+                    Toast.makeText(getActivity(), "Account created",
+                            Toast.LENGTH_LONG).show();
+                    getActivity().getSupportFragmentManager()
+                            .popBackStack();
+                } else {
+                    Toast.makeText(getActivity(), "Passwords do not match",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        return view;
     }
 
 
