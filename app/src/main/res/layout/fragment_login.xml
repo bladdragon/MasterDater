@@ -26,7 +26,7 @@
         android:inputType="textPassword"
         android:hint="Password"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/pass"
         android:layout_marginTop="59dp"
         android:layout_alignTop="@+id/user"
         android:layout_alignLeft="@+id/user"
