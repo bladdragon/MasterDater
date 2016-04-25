@@ -1,6 +1,5 @@
 package com.example.austin.masterdater;
 
-import com.cs407_android.*;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -13,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cs407_android.masterdater.CalendarEvent;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -27,6 +25,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 
 
 /**
@@ -34,7 +34,7 @@ import retrofit2.Response;
  */
 public class CalendarActivity  extends AppCompatActivity {
 
-    private ArrayList<CalendarEvent> gameList;
+    private ArrayList<CalendarEvent> EventList;
     private CustomAdapter adapter;
 
     @Override
@@ -48,8 +48,8 @@ public class CalendarActivity  extends AppCompatActivity {
 
         ab.setDisplayHomeAsUpEnabled(true);
 
-        gameList = new ArrayList<>();
-        adapter = new CustomAdapter(this, gameList);
+        EventList = new ArrayList<>();
+        adapter = new CustomAdapter(this, EventList);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -100,13 +100,11 @@ public class CalendarActivity  extends AppCompatActivity {
     }
 
 
-    private void getCalendarEventsRetro(String username, String password){
+    private void getCalendarEventsRetro(String username, int password){
 
         //create the REST client
-        CalendarClient client = null;
-
-        //TODO
-        Call<List<CalendarEvent>> call = new ;
+        CalendarClient calendarService = ServiceGenerator.createService(CalendarClient.class);
+        Call<List<CalendarEvent>> call = calendarService.Events();
 
         call.enqueue(new Callback<List<CalendarEvent>>() {
 
@@ -114,12 +112,13 @@ public class CalendarActivity  extends AppCompatActivity {
             public void onResponse(Call<List<CalendarEvent>> call, Response<List<CalendarEvent>> response) {
                 if (response.isSuccess()) {
                     Log.d("HTTP_GET_RESPONSE", response.raw().toString());
-                    //TODO populate list with the respons (JSON)
+                    EventList.addAll(response.body());
 
                 } else {
                     // error response, no access to resource?
                     Log.d("HTTP_GET_RESPONSE", response.raw().toString());
-                    //TODO do something to say you got nothing back
+
+                    //TODO do something to say you got nothing back, maybe not
 
                 }
             }
@@ -128,42 +127,44 @@ public class CalendarActivity  extends AppCompatActivity {
             public void onFailure(Call<List<CalendarEvent>> call, Throwable t) {
                 // something went completely south (like no internet connection)
                 Log.d("Error", t.getMessage());
+
                 //TODO do something to handle failure
 
             }
         });
     }
 
-    public void deleteCalendarEvent(CalendarEvent CalendarEvent){
+    public void deleteCalendarEvent(CalendarEvent calendarEvent){
+        Long i = calendarEvent.getId();
 
-        //TODO make a http request to delete the CalendarEvent
-
-    }
-
-    private void testCase1(){
-        //fetch backend stuffs using some s
-        Gson gson = new GsonBuilder().create();
-        CalendarEvent CalendarEvents = gson.fromJson(readJSON(getResources(), R.raw.simple_json), CalendarEvent.class);
-        if(CalendarEvents == null){
-            Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
-        }else {
-            CalendarEventList.add(CalendarEvents);
-            adapter.notifyDataSetChanged();
-        }
+      //  @DELETE(i)
 
     }
 
-    private void testCase2(){
-        Gson gson = new GsonBuilder().create();
-        CalendarEvent[] CalendarEvents = gson.fromJson(readJSON(getResources(), R.raw.multi_json), CalendarEvent[].class);
-        if(CalendarEvents == null){
-            Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
-        }else {
-            CalendarEventList.addAll(Arrays.asList(CalendarEvents));
-            adapter.notifyDataSetChanged();
-        }
-
-    }
+//    private void testCase1(){
+//        //fetch backend stuffs using some s
+//        Gson gson = new GsonBuilder().create();
+//        CalendarEvent CalendarEvents = gson.fromJson(readJSON(getResources(), R.raw.simple_json), CalendarEvent.class);
+//        if(CalendarEvents == null){
+//            Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
+//        }else {
+//            EventList.add(CalendarEvents);
+//            adapter.notifyDataSetChanged();
+//        }
+//
+//    }
+//
+//    private void testCase2(){
+//        Gson gson = new GsonBuilder().create();
+//        CalendarEvent[] CalendarEvents = gson.fromJson(readJSON(getResources(), R.raw.multi_json), CalendarEvent[].class);
+//        if(CalendarEvents == null){
+//            Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
+//        }else {
+//            EventList.addAll(Arrays.asList(CalendarEvents));
+//            adapter.notifyDataSetChanged();
+//        }
+//
+//    }
 
     /**
      * Read from a resources file and create a object that will allow the creation of other

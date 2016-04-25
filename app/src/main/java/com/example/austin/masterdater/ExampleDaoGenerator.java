@@ -10,7 +10,7 @@ import de.greenrobot.daogenerator.Schema;
 
 public class ExampleDaoGenerator {
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1, "example.austin.masterdater"); //Scheme for GreenDAO ORM
+        Schema schema = new Schema(1, "CSmasterdater"); //Scheme for GreenDAO ORM
         createDB(schema);
         new DaoGenerator().generateAll(schema, "./app/src/main/java/");
         //where you want to store the generated classes.
@@ -24,12 +24,11 @@ public class ExampleDaoGenerator {
         User.addIntProperty("PhoneNumber");
 
         Entity CalendarEvent = schema.addEntity("CalendarEvent");
-        CalendarEvent.addIntProperty("Id");
+        CalendarEvent.addIdProperty();
+        CalendarEvent.addStringProperty("Name");
         CalendarEvent.addDateProperty("Date");
         CalendarEvent.addIntProperty("Time");
         CalendarEvent.addBooleanProperty("Free");
-
-        CalendarEvent.getProperties().get(0);
 
         User.addToMany(CalendarEvent, CalendarEvent.getProperties().get(0));
 

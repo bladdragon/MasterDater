@@ -26,9 +26,9 @@ public class ServiceGenerator {
        return createService(serviceClass, null, null);
     }
 
-    public static <S> S createService(Class<S> serviceClass, final String username, final String password) {
-        if (username != null && password != null) {
-            String credentials = username + ":" + password;
+    public static <S> S createService(Class<S> serviceClass, final String username, final Integer PhoneNumber) {
+        if (username != null && PhoneNumber != null) {
+            String credentials = username + ":" + PhoneNumber;
             final String basic =
                     "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 
@@ -40,8 +40,8 @@ public class ServiceGenerator {
                     Request.Builder requestBuilder = original.newBuilder()
                             .header("Authorization", basic)
                             .header("Accept", "/api/json")
-                            .header("email", username)
-                            .header("password", password)
+                            .header("name", username)
+                            .header("password", PhoneNumber.toString())
 
                     .method(original.method(), original.body());
 

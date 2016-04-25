@@ -9,8 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.cs407_android.masterdater.CalendarEvent;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -23,8 +23,8 @@ public class CustomAdapter extends BaseAdapter {
     // A cache for looking up Views
     private static class ViewHolder {
         TextView name;
-        TextView genre;
-        TextView platform;
+        TextView time;
+        TextView date;
         Button delete;
     }
 
@@ -38,7 +38,7 @@ public class CustomAdapter extends BaseAdapter {
         return events.size();
     }
 
-    @CalendarEvent
+    @Override
     public CalendarEvent getItem(int position) {
         return events.get(position);
     }
@@ -58,10 +58,10 @@ public class CustomAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.custom_list_item, parent, false);
 
-            viewHolder.name = (TextView) convertView.findViewById(R.id.name_text_view);
-            viewHolder.genre = (TextView) convertView.findViewById(R.id.genre);
-            viewHolder.platform = (TextView) convertView.findViewById(R.id.platform);
-            viewHolder.delete = (Button) convertView.findViewById(R.id.button2);
+            viewHolder.name = (TextView) convertView.findViewById(R.id.name);
+            viewHolder.time = (TextView) convertView.findViewById(R.id.time);
+            viewHolder.date = (TextView) convertView.findViewById(R.id.date);
+            viewHolder.delete = (Button) convertView.findViewById(R.id.deleteButton);
 
             convertView.setTag(viewHolder);
         } else {
@@ -69,20 +69,20 @@ public class CustomAdapter extends BaseAdapter {
         }
 
         // Get the data item for this position
-        final CalendarEvent game = getItem(position);
-
         CalendarEvent ce = getItem(position);
 
-        viewHolder.ID.setText(ce.getId());
         viewHolder.time.setText(ce.getTime());
-        viewHolder.date.setText(ce.getDate());
-        viewHolder.free.setText(ce.getFree());
+        viewHolder.date.setText(ce.getDate().toString());
+
+        //TODO adjust view based on free status
 
         //TODO implement onclick for delete (do this after implementing retrofit)
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("CUSTOM_ADAPTER", "Delete button was pressed");
+
+
             }
         });
 
