@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class LoginFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private String userName;
-    private String userPass;
+    private String userNum;
     private String userID;
     private EditText userNameInput;
     private EditText userPassInput;
@@ -78,13 +79,17 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         userNameInput = (EditText) view.findViewById(R.id.user);
         userPassInput = (EditText) view.findViewById(R.id.pass);
+
+        TelephonyManager tMgr = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        userPassInput.setText(tMgr.getLine1Number());
+
         loginButton = (Button) view.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 validUser = true;
                 userName = userNameInput.getText().toString();
-                userPass = userPassInput.getText().toString();
+                userNum = userPassInput.getText().toString();
 
                 //Server code to see if pass userName is userPass
 
