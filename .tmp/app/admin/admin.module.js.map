@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../client/app/admin/admin.module.js"],"names":[],"mappings":"AAAA;;AAEA,QAAQ,MAAR,CAAe,aAAf,EAA8B,CAC5B,YAD4B,EAE5B,WAF4B,CAA9B","file":"admin.module.js","sourcesContent":["'use strict';\n\nangular.module('mdApp.admin', [\n  'mdApp.auth',\n  'ui.router'\n]);\n"]}
