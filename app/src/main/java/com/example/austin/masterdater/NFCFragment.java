@@ -1,6 +1,7 @@
 package com.example.austin.masterdater;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -8,6 +9,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ public class NFCFragment extends Fragment {
     private PendingIntent mNfcPendingIntent;
     private IntentFilter[] mNdefExchangeFilters;
     private NdefMessage mNdefMessage;
+    private String mUserPhoneNumber;
 
     public NFCFragment() {
         // Required empty public constructor
@@ -97,10 +100,28 @@ public class NFCFragment extends Fragment {
             mTextView.setText("This phone is not NFC enabled.");
         }
 
+        mNfcPendingIntent = PendingIntent.getActivity(this.getContext(), 0,
+                new Intent(this.getContext(), getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        // Intent filters for exchanging over p2p.
+        IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        try {
+            ndefDetected.addDataType("text/plain");
+        } catch (IntentFilter.MalformedMimeTypeException e) {
+        }
+        mNdefExchangeFilters = new IntentFilter[] { ndefDetected };
+
+
         // create an NDEF message with record of user's phone number of plain text type
         mNdefMessage = new NdefMessage(
                 new NdefRecord[] {
                         createNewTextRecord("The User's phone number goes here", Locale.ENGLISH, true) }); //TODO
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        enableNdefExchangeMode();
     }
 
     public static NdefRecord createNewTextRecord(String text, Locale locale, boolean encodeInUtf8) {
@@ -121,8 +142,16 @@ public class NFCFragment extends Fragment {
     }
 
     private void enableNdefExchangeMode() {
-        mNfcAdapter.enableForegroundNdefPush(this.getContext(),
-                NfcUtils.getUidAsNdef(mUserId));
+        TelephonyManager tMgr = (TelephonyManager)this.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        String mUserPhoneNumber = tMgr.getLine1Number();
+
+        // create an NDEF message with record of user's phone number of plain text type
+        mNdefMessage = new NdefMessage(
+                new NdefRecord[] {
+                        createNewTextRecord(mUserPhoneNumber, Locale.ENGLISH, true) });
+
+        mNfcAdapter.enableForegroundNdefPush(this.getActivity(),
+                mNdefMessage);
         mNfcAdapter.enableForegroundDispatch(this.getActivity(), mNfcPendingIntent,
                 mNdefExchangeFilters, null);
     }
