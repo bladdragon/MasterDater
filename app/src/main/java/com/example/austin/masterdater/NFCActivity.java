@@ -48,6 +48,12 @@ public class NFCActivity extends AppCompatActivity {
         mFeedback_TV = (TextView) findViewById(R.id.Feedback_textView);
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter != null) {
+            mFeedback_TV.setText("NFC is ready");
+        } else {
+            mFeedback_TV.setText("This phone is not NFC enabled.");
+        }
+
         mNfcPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         // Intent filters for exchanging over p2p.
@@ -105,9 +111,14 @@ public class NFCActivity extends AppCompatActivity {
         // NDEF exchange mode
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
             NdefMessage[] msgs = getNdefMessages(intent);
+
+
             // fireFriendRequest(msgs[0]); //TODO
             // this is where we send the message to the backend
-            Toast.makeText(this, "sent friend request via nfc!", Toast.LENGTH_LONG).show();
+
+
+            mFeedback_TV.setText("NFC connection successful with " + msgs[0]); //TODO
+            Toast.makeText(this, "Added friend via nfc!", Toast.LENGTH_LONG).show();
         }
     }
 
