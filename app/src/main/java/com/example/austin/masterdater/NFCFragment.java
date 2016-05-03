@@ -155,4 +155,6 @@ public class NFCFragment extends Fragment {
         mNfcAdapter.enableForegroundDispatch(this.getActivity(), mNfcPendingIntent,
                 mNdefExchangeFilters, null);
     }
+
+
 }
