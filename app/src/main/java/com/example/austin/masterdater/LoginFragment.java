@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 /**
@@ -28,10 +30,14 @@ public class LoginFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText userName;
-    private EditText userPass;
+    private String userName;
+    private String userNum;
+    private String userID;
+    private EditText userNameInput;
+    private EditText userPassInput;
     private Button loginButton;
     private Button registerButton;
+    private boolean validUser;
 
 
     public LoginFragment() {
@@ -71,13 +77,34 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        userNameInput = (EditText) view.findViewById(R.id.user);
+        userPassInput = (EditText) view.findViewById(R.id.pass);
+
+        TelephonyManager tMgr = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        userPassInput.setText(tMgr.getLine1Number());
+
         loginButton = (Button) view.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent calendar = new Intent(getActivity(), CalendarActivity.class);
-                calendar.putExtra("user", "");
-                startActivity(calendar);
+                validUser = true;
+                userName = userNameInput.getText().toString();
+                userNum = userPassInput.getText().toString();
+
+                //Server code to see if pass userName is userPass
+
+                //Server returns userID if found or null if not found
+
+                //if return is null then validUser is false still else set validUser to true
+
+                if(validUser) {
+                    Intent calendar = new Intent(getActivity(), CalendarActivity.class);
+                    calendar.putExtra(userID, "");
+                    startActivity(calendar);
+                } else {
+                    Toast.makeText(getActivity(), "Invalid Username or Password",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
         registerButton = (Button) view.findViewById(R.id.registerButton);
