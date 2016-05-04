@@ -72,6 +72,9 @@ public class NFCActivity extends AppCompatActivity {
         // get the user's phone number
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         mUserPhoneNumber = tMgr.getLine1Number();
+        if (mUserPhoneNumber == null) {
+            mUserPhoneNumber = "1234567890";
+        }
 
         // create an NDEF message with record of user's phone number of plain text type
         mNdefMessage = new NdefMessage(
