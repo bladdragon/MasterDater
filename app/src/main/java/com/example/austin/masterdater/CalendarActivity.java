@@ -45,15 +45,11 @@ public class CalendarActivity extends AppCompatActivity {
     Long date;
     static ArrayList<EventKeeper> EventList = new ArrayList<EventKeeper>();
     static ArrayList<EventKeeper> FriendEventList = new ArrayList<EventKeeper>();
-<<<<<<< HEAD
-    private static String MyNumber;
-    static private String FriendNumber;
     static private User userFriend;
     static private Firebase mRef;
-=======
     private static String MyNumber = "";
     private static String FriendNumber = "";
->>>>>>> refs/remotes/origin/master
+
 
     public static void setFriendNumber(String friendNumber) {
         FriendNumber = friendNumber;

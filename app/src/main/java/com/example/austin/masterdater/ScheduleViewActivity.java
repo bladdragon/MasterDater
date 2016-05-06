@@ -50,8 +50,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-<<<<<<< HEAD
-=======
 //        setSupportActionBar(toolbar);
 
 //               FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -62,10 +60,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
         syncedUser = (TextView) findViewById(R.id.currentFriendView);
         syncButton = (Button) findViewById(R.id.syncButton);
->>>>>>> refs/remotes/origin/master
+
         final DateSwitcher DS = new DateSwitcher();
         FragmentManager FM = getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();
