@@ -93,6 +93,7 @@ public class ShareByContactsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
 
+<<<<<<< HEAD
         addByContacts = (TextView) view.findViewById(R.id.addByContacts_textView);
 //        contactList = (ListView) view.findViewById(R.id.contacts_listView);
 //        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,6 +103,8 @@ public class ShareByContactsFragment extends Fragment {
 //            }
 //        });
        
+=======
+>>>>>>> master
         return view;
     }
 
