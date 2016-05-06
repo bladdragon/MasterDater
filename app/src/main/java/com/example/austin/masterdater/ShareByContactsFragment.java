@@ -1,11 +1,13 @@
 package com.example.austin.masterdater;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.List;
@@ -96,20 +99,58 @@ public class ShareByContactsFragment extends Fragment {
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
+        String friendPhoneNum = "";
+
+
+
+
+
+
 
         switch (reqCode) {
             case (PICK_CONTACT) :
                 if (resultCode == Activity.RESULT_OK) {
+
+                    ContentResolver cr = getActivity().getContentResolver();
+                    Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null,
+                            null, null, null, null);
+                    if (cursor.moveToFirst()) {
+                        String contactId =
+                                cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                        //
+                        //  Get all phone numbers.
+                        //
+                        Cursor phones = cr.query(Phone.CONTENT_URI, null,
+                                Phone._ID + " = ?" + contactId, new String[]{contactId}, null);
+
+                        phones.moveToNext();
+                        System.out.println("This is " + Phone.NUMBER);
+                        friendPhoneNum = phones.getString(phones.getColumnIndex(Phone.NUMBER));
+                        //Toast.makeText(getContext(), friendPhoneNum, Toast.LENGTH_LONG).show();
+                        CalendarActivity.setFriendNumber(friendPhoneNum);
+                        //Toast.makeText(getContext(), "Found Number", Toast.LENGTH_LONG).show();
+                        getActivity().finish();
+
+                        phones.close();
+                    }
+                    cursor.close();
+                    /*
                     Uri contactData = data.getData();
                     Cursor c =  getActivity().getContentResolver().query(contactData, null, null, null, null);
                     if (c.moveToFirst()) {
-                        String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                        String friendPhoneNum = "0";
-                        if (Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) >0) {
-                            friendPhoneNum = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+                        //String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                        //friendPhoneNum = "0";
+                        //Integer test = Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
+                        ContentResolver cr = getActivity().getContentResolver();
+                        Cursor phones = cr.query(Phone.CONTENT_URI, null,
+                                Phone.CONTACT_ID + " = " + contactId, null, null);
+                        if (true) {
+                            System.out.println("Not broken Yet");
+                            friendPhoneNum = c.getString(c.getColumnIndex(Phone.NUMBER));
                         }
                         CalendarActivity.setFriendNumber(friendPhoneNum);
-                    }
+                    }*/
                 }
                 break;
         }
