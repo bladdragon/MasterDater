@@ -147,6 +147,8 @@ public class NFCActivity extends AppCompatActivity {
             }
             //mFeedback_TV.setText("NFC connection successful with " + friendNumber); //TODO
             CalendarActivity.setFriendNumber(friendNumber);
+            CalendarActivity.clearFriendList();
+            CalendarActivity.getFriendEvents();
             Toast.makeText(this, "Added " + friendNumber + " via nfc!", Toast.LENGTH_LONG).show();
             finish();
         }

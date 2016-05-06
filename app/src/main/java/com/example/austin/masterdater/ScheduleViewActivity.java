@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.design.widget.FloatingActionButton;
@@ -89,15 +90,21 @@ public class ScheduleViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO call their sync method
-                Toast.makeText(v.getContext(), "Added ", Toast.LENGTH_LONG).show();
-                fillCalendar("COMMON");
+
+                if(!CalendarActivity.getFriendNumber().equals("")){
+                    Toast.makeText(v.getContext(), "Showing shared free time", Toast.LENGTH_LONG).show();
+                    fillCalendar("COMMON");
+                } else {
+                    Toast.makeText(v.getContext(), "Connect with a friend first!", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
 
     public void getCommonArray(){
         TimeSlot[] FriendArray = CalendarActivity.getEvents(currDate, "friend");
-
+        System.out.println("Visited Common Array");
         CommonArray = new TimeSlot[49];
         for (int i = 0; i < CommonArray.length; i++) {
             if (i % 2 == 1) {
@@ -108,7 +115,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         }
 
         for(int i = 0; i< FriendArray.length; i++){
-            if(EventArray[i].isActive() || FriendArray[i].isActive()){
+            if(!EventArray[i].isActive() && !FriendArray[i].isActive()){
                 CommonArray[i].setActive(true);
             }
         }
@@ -214,6 +221,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     public void fillCalendar(String type){
         final ListView tempList = (ListView) findViewById(R.id.listView);
+        System.out.println("FIllCalendar in Sch.View was called");
         TimeSlot[] tempArray = new TimeSlot[49];
         if(type.toUpperCase().equals("USER")){
             tempArray = EventArray;
@@ -230,17 +238,21 @@ public class ScheduleViewActivity extends AppCompatActivity {
         // Third parameter - ID of the TextView to which the data is written
         // Forth - the Array of data
         String[] Values = new String[48];
-        for (int i = 0; i < EventArray.length - 1; i++) {
+        for (int i = 0; i < tempArray.length - 1; i++) {
             DateFormat formatter = new SimpleDateFormat("hh:mm:a");
-            Values[i] = formatter.format(EventArray[i].getTime());
+            Values[i] = formatter.format(tempArray[i].getTime());
         }
         ArrayList<TimeSlot> adapter2 = new ArrayList<TimeSlot>();
         UserAdapter adapter = new UserAdapter(this, adapter2);
+        if(type.toUpperCase().equals("COMMON")){
+            adapter.colors[1] = Color.parseColor("#ccffcc");
+            adapter.colors[0] = Color.parseColor("#ffcccc");
+        }
         tempList.setAdapter(adapter);
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,  Values);
 //        tempList.setAdapter(adapter);
-        for (int i = 0; i < EventArray.length - 1; i++) {
-            adapter.add(EventArray[i]);
+        for (int i = 0; i < tempArray.length - 1; i++) {
+            adapter.add(tempArray[i]);
         }
         // tempList.
 

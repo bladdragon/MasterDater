@@ -13,6 +13,8 @@
     <string name="right">Next Day</string>
     <string name="sync">Sync Now</string>
     <string name="currentUser">Connect with friend to sync</string>
+    <string name="login">LOGIN</string>
+    <string name="registerr">REGISTER</string>
 
 
 
