@@ -78,13 +78,6 @@ public class ShareByContactsFragment extends Fragment {
 
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, PICK_CONTACT);
-
-        /*Cursor cur = getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
-                null, null);
-
-        contactAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, contactStringArray);
-*/
     }
 
     @Override
@@ -119,18 +112,5 @@ public class ShareByContactsFragment extends Fragment {
                 break;
         }
     }
-
-    /*private Cursor getContacts() {
-        // Run query
-        Uri uri = ContactsContract.Contacts.CONTENT_URI;
-        String[] projection =
-                new String[]{ ContactsContract.Contacts._ID,
-                        ContactsContract.Contacts.DISPLAY_NAME };
-        String selection = null;
-        String[] selectionArgs = null;
-        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME +
-                " COLLATE LOCALIZED ASC";
-        return managedQuery(uri, projection, selection, selectionArgs, sortOrder);
-    }*/
 
 }
