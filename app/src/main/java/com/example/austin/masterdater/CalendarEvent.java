@@ -6,33 +6,23 @@ package com.example.austin.masterdater;
  */
 public class CalendarEvent {
 
-    private Long id;
     private String Name;
     private java.util.Date Date;
-    private Integer Time;
-    private Boolean Free;
+    private int Time;
+    private boolean Free;
 
     public CalendarEvent() {
     }
 
-    public CalendarEvent(Long id) {
-        this.id = id;
-    }
+//    public CalendarEvent(Long id) {
+//        this.id = id;
+//    }
 
-    public CalendarEvent(Long id, String Name, java.util.Date Date, Integer Time, Boolean Free) {
-        this.id = id;
+    public CalendarEvent(String Name, java.util.Date Date, int Time, boolean Free) {
         this.Name = Name;
         this.Date = Date;
         this.Time = Time;
         this.Free = Free;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -51,19 +41,19 @@ public class CalendarEvent {
         this.Date = Date;
     }
 
-    public Integer getTime() {
+    public int getTime() {
         return Time;
     }
 
-    public void setTime(Integer Time) {
+    public void setTime(int Time) {
         this.Time = Time;
     }
 
-    public Boolean getFree() {
+    public boolean getFree() {
         return Free;
     }
 
-    public void setFree(Boolean Free) {
+    public void setFree(boolean Free) {
         this.Free = Free;
     }
 

@@ -135,7 +135,7 @@ public class CalendarActivity  extends AppCompatActivity {
     }
 
     public void deleteCalendarEvent(CalendarEvent calendarEvent){
-        Long i = calendarEvent.getId();
+//        Long i = calendarEvent.getId();
 
       //  @DELETE(i)
 
