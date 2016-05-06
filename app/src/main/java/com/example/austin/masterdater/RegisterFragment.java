@@ -12,6 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +46,7 @@ public class RegisterFragment extends Fragment {
     //private EditText userPassConfirm;
     private EditText phoneNumber;
     private Button registerButton;
+    private Firebase mRef;
 
 
     public RegisterFragment() {
@@ -79,28 +89,32 @@ public class RegisterFragment extends Fragment {
         registerButton = (Button) view.findViewById(R.id.confirmRegister);
         userName = (EditText) view.findViewById(R.id.username);
         phoneNumber = (EditText) view.findViewById(R.id.number);
-        //userPass = (EditText) view.findViewById(R.id.password);
-        //userPassConfirm = (EditText) view.findViewById(R.id.confirmPass);
         TelephonyManager tMgr = (TelephonyManager)getContext().getSystemService(Context.TELEPHONY_SERVICE);
         phoneNumber.setText(tMgr.getLine1Number());
+
+        Firebase.setAndroidContext(this.getContext());
+        mRef = new Firebase("https://datesync.firebaseio.com/");
+
+        mRef.child("9206805652").child("calendarEventList").setValue(new Date(2017, 5, 5));
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 user = userName.getText().toString();
-                //pass = userPass.getText().toString();
-                //passconf = userPassConfirm.getText().toString();
                 number = phoneNumber.getText().toString();
-                //if(pass.equals(passconf)) {
+
                     //add user to server
+                List<Date> dates = new ArrayList<Date>();
+                dates.add(new Date());
+                User thisUser = new User(user, number,dates);
+
+                mRef.child(number).setValue(thisUser);
+
                     Toast.makeText(getActivity(), "Account created",
                             Toast.LENGTH_LONG).show();
                     getActivity().getSupportFragmentManager()
                             .popBackStack();
-                //} else {
-                //    Toast.makeText(getActivity(), "Passwords do not match",
-                //            Toast.LENGTH_LONG).show();
-                //}
+
             }
         });
         return view;

@@ -1,5 +1,6 @@
 package com.example.austin.masterdater;
 
+import java.util.Date;
 import java.util.List;
 
 import de.greenrobot.dao.DaoException;
@@ -10,45 +11,24 @@ import de.greenrobot.dao.DaoException;
  */
 public class User {
 
-    private Long id;
     private String Name;
-    private Integer PhoneNumber;
-
-    /** Used to resolve relations */
-    private DaoSession daoSession;
+    private String PhoneNumber;
 
     /** Used for active entity operations. */
-    private UserDao myDao;
-
-    private List<CalendarEvent> calendarEventList;
+//    private List<CalendarEvent> calendarEventList;
+    private List<Date> calendarEventList;
 
     public User() {
     }
 
-    public User(Long id) {
-        this.id = id;
-    }
 
-    public User(Long id, String Name, Integer PhoneNumber) {
-        this.id = id;
+    public User(String Name, String PhoneNumber, List<Date> ce) {
         this.Name = Name;
         this.PhoneNumber = PhoneNumber;
+        this.calendarEventList = ce;
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getUserDao() : null;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return Name;
     }
@@ -57,53 +37,23 @@ public class User {
         this.Name = Name;
     }
 
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return PhoneNumber;
     }
 
-    public void setPhoneNumber(Integer PhoneNumber) {
+    public void setPhoneNumber(String PhoneNumber) {
         this.PhoneNumber = PhoneNumber;
     }
 
-    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public synchronized List<CalendarEvent> getCalendarEventList() {
-        if (calendarEventList == null) {
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            CalendarEventDao targetDao = daoSession.getCalendarEventDao();
-            calendarEventList = targetDao._queryUser_CalendarEventList(id);
-        }
-        return calendarEventList;
+    public List<Date> getCalendarEventList(){
+        return this.calendarEventList;
     }
 
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    public synchronized void resetCalendarEventList() {
-        calendarEventList = null;
+    public void addCalendarEvent(Date d){
+         calendarEventList.add(d);
     }
 
-    /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */
-    public void delete() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }    
-        myDao.delete(this);
-    }
 
-    /** Convenient call for {@link AbstractDao#update(Object)}. Entity must attached to an entity context. */
-    public void update() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }    
-        myDao.update(this);
-    }
 
-    /** Convenient call for {@link AbstractDao#refresh(Object)}. Entity must attached to an entity context. */
-    public void refresh() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }    
-        myDao.refresh(this);
-    }
 
 }
