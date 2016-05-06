@@ -8,6 +8,7 @@
     <string name="title_activity_schedule_view">ScheduleViewActivity</string>
     <string name="title_activity_schedule">ScheduleActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="select_contact">Select a contact to add</string>
 
 
     <string-array name="action_array">
