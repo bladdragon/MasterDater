@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.austin.masterdater">
 
-    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
@@ -34,7 +34,8 @@
                 android:value="com.example.austin.masterdater.CalendarActivity" />
         </activity>
         <activity android:name=".NFCActivity" />
-        <activity android:name=".ScheduleViewActivity"></activity>
+        <activity android:name=".ScheduleViewActivity" />
+        <activity android:name=".ShareByContactsActivity"/>
     </application>
 
 </manifest>
