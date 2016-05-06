@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +49,7 @@ public class ShareByContactsFragment extends Fragment {
     private EditText userPass;
     private Button nfcButton;
     private Button contactsButton;
+
 
 
     public ShareByContactsFragment() {
@@ -102,12 +102,6 @@ public class ShareByContactsFragment extends Fragment {
         super.onActivityResult(reqCode, resultCode, data);
         String friendPhoneNum = "";
 
-
-
-
-
-
-
         switch (reqCode) {
             case (PICK_CONTACT) :
                 if (resultCode == Activity.RESULT_OK) {
@@ -156,7 +150,4 @@ public class ShareByContactsFragment extends Fragment {
                 break;
         }
     }
-
-
-
 }

@@ -22,9 +22,18 @@ public class ShareByContactsActivity extends AppCompatActivity {
                 .commit();
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     @Override
     public void finish() {
         super.finish();
     }
+
+
 
 }
