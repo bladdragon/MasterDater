@@ -24,6 +24,7 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.usage.UsageEvents.Event;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -36,6 +37,7 @@ import java.util.Date;
 public class ScheduleViewActivity extends AppCompatActivity {
 
     public TimeSlot[] EventArray;
+    public TimeSlot[] CommonArray;
     private static TextView textview;
     Date currDate;
     Calendar c;
@@ -57,7 +59,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
         final DateSwitcher DS = new DateSwitcher();
         FragmentManager FM = getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();
@@ -69,137 +70,153 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         Cursor calCursor;
         final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        EventArray = new TimeSlot[49];
+//        EventArray = new TimeSlot[49];
 
         DS.set(formatter.format(currDate));
         FT.add(R.id.detailFragment, DS);
         FT.commit();
 
+//
+//        for (int i = 0; i < EventArray.length; i++) {
+//            if (i % 2 == 1) {
+//                EventArray[i] = new TimeSlot(new Time(i / 2, 30, 0), false);
+//            } else {
+//                EventArray[i] = new TimeSlot(new Time(i / 2, 0, 0), false);
+//            }
+//        }
+        EventArray = CalendarActivity.getEvents(currDate, "user");
+      //  getEvents();
 
-        for (int i = 0; i < EventArray.length; i++) {
+        fillCalendar("user");
+    }
+
+    public void getCommonArray(){
+        TimeSlot[] FriendArray = CalendarActivity.getEvents(currDate, "friend");
+        CommonArray = new TimeSlot[49];
+        for (int i = 0; i < CommonArray.length; i++) {
             if (i % 2 == 1) {
-                EventArray[i] = new TimeSlot(new Time(i / 2, 30, 0), false);
+                CommonArray[i] = new TimeSlot(new Time(i / 2, 30, 0), false);
             } else {
-                EventArray[i] = new TimeSlot(new Time(i / 2, 0, 0), false);
+                CommonArray[i] = new TimeSlot(new Time(i / 2, 0, 0), false);
             }
         }
 
-        getEvents();
+        for(int i = 0; i< FriendArray.length; i++){
+            if(EventArray[i].isActive() || FriendArray[i].isActive()){
+                CommonArray[i].setActive(true);
+            }
+        }
 
-        fillCalendar();
     }
 
     public void Incrementor(){
         c.add(c.DATE, 1);
         currDate = c.getTime();
-        System.out.println(currDate);
-        getEvents();
-        fillCalendar();
+        EventArray = CalendarActivity.getEvents(currDate, "user");
+        fillCalendar("user");
     }
 
     public void Decrementor(){
         c.add(c.DATE, -1);
         currDate = c.getTime();
-        System.out.println(currDate);
-        getEvents();
-        fillCalendar();
+       // getEvents();
+        EventArray = CalendarActivity.getEvents(currDate, "user");
+        fillCalendar("user");
     }
 
-    public void getEvents() {
-        Cursor calCursor;
-        ContentResolver contentResolver = this.getContentResolver();
-        String[] proj = new String[]{CalendarContract.Events._ID, CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND, CalendarContract.Events.RRULE, CalendarContract.Events.TITLE};
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        calCursor = contentResolver.query(CalendarContract.Events.CONTENT_URI, proj, null, null, null);
+//    public void getEvents() {
+//        Cursor calCursor;
+//        ContentResolver contentResolver = this.getContentResolver();
+//        String[] proj = new String[]{CalendarContract.Events._ID, CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND, CalendarContract.Events.RRULE, CalendarContract.Events.TITLE};
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        calCursor = contentResolver.query(CalendarContract.Events.CONTENT_URI, proj, null, null, null);
+//
+//        for(int i = 0; i<EventArray.length; i++){
+//            EventArray[i].setActive(false);
+//            EventArray[i].removeCenter();
+//        }
+//        while (calCursor.moveToNext()) {
+//            String title = calCursor.getString(4);
+//            long beginVal = calCursor.getLong(1);
+//            long eventID = calCursor.getLong(0);
+//            //TODO:(1) GO through all events.(2)Add events with current date into array.
+//
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(beginVal);
+//            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//            Date startDate = calendar.getTime();
+//            Date endDate = new Date(calCursor.getLong(2));
+//
+//
+//            Date startDateCompressed = null;
+//            try {
+//                startDateCompressed = formatter.parse(formatter.format(calendar.getTime()));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            Date endDateCompressed = null;
+//            try {
+//                endDateCompressed = formatter.parse(formatter.format(calCursor.getLong(2)));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            Date currDateCompressed = null;
+//            try {
+//                currDateCompressed = formatter.parse(formatter.format(currDate));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//            //TODO: Handle case where event extends all-day.
+//            //if the startingDate is less than the current Date and the endingDate is greater than the current Date
+//            if(startDateCompressed.compareTo(currDateCompressed) < 0  && endDateCompressed.compareTo(currDateCompressed) > 1 ){
+//                EventArray[49].setActive(true);
+//            }else if(startDateCompressed.compareTo(currDateCompressed) == 0 && endDateCompressed.compareTo(currDateCompressed) == 0){
+//                int startIndex = dateHashFunction(startDate, false);
+//                int endIndex = dateHashFunction(endDate, true);
+//                int centerIndex = startIndex + (endIndex-startIndex)/2;
+//                for(int i = startIndex; i<= endIndex; i++){
+//                    EventArray[i].setActive(true);
+//                    if(i == centerIndex) EventArray[i].setCenter();
+//                }
+//            }else if(startDateCompressed.compareTo(currDateCompressed) < 0 && endDateCompressed.compareTo(currDateCompressed) == 0){
+//                int endIndex = dateHashFunction(endDate, true);
+//                int centerIndex =(endIndex)/2;
+//                for(int i = 0; i<=endIndex; i++){
+//                    EventArray[i].setActive(true);
+//                    if(i == centerIndex) EventArray[i].setCenter();
+//                }
+//            }else if(startDateCompressed.compareTo(currDateCompressed) == 0 && endDateCompressed.compareTo(currDateCompressed) > 0){
+//                int startIndex = dateHashFunction(startDate, false);
+//                int centerIndex = startIndex+ (48-startIndex)/2;
+//                for(int i = startIndex; i<=48; i++){
+//                    EventArray[i].setActive(true);
+//                    if(i == centerIndex) EventArray[i].setCenter();
+//                }
+//            }
+//        }
+//    }
 
-        for(int i = 0; i<EventArray.length; i++){
-            EventArray[i].setActive(false);
-            EventArray[i].removeCenter();
-        }
-        while (calCursor.moveToNext()) {
-            String title = calCursor.getString(4);
-            long beginVal = calCursor.getLong(1);
-            long eventID = calCursor.getLong(0);
-            //TODO:(1) GO through all events.(2)Add events with current date into array.
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(beginVal);
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-            Date startDate = calendar.getTime();
-            Date endDate = new Date(calCursor.getLong(2));
-
-
-            Date startDateCompressed = null;
-            try {
-                startDateCompressed = formatter.parse(formatter.format(calendar.getTime()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date endDateCompressed = null;
-            try {
-                endDateCompressed = formatter.parse(formatter.format(calCursor.getLong(2)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date currDateCompressed = null;
-            try {
-                currDateCompressed = formatter.parse(formatter.format(currDate));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            //TODO: Handle case where event extends all-day.
-            //if the startingDate is less than the current Date and the endingDate is greater than the current Date
-            if(startDateCompressed.compareTo(currDateCompressed) < 0  && endDateCompressed.compareTo(currDateCompressed) > 1 ){
-                EventArray[49].setActive(true);
-            }else if(startDateCompressed.compareTo(currDateCompressed) == 0 && endDateCompressed.compareTo(currDateCompressed) == 0){
-                int startIndex = dateHashFunction(startDate, false);
-                int endIndex = dateHashFunction(endDate, true);
-                int centerIndex = startIndex + (endIndex-startIndex)/2;
-                for(int i = startIndex; i<= endIndex; i++){
-                    EventArray[i].setActive(true);
-                    if(i == centerIndex) EventArray[i].setCenter();
-                }
-            }else if(startDateCompressed.compareTo(currDateCompressed) < 0 && endDateCompressed.compareTo(currDateCompressed) == 0){
-                int endIndex = dateHashFunction(endDate, true);
-                int centerIndex =(endIndex)/2;
-                for(int i = 0; i<=endIndex; i++){
-                    EventArray[i].setActive(true);
-                    if(i == centerIndex) EventArray[i].setCenter();
-                }
-            }else if(startDateCompressed.compareTo(currDateCompressed) == 0 && endDateCompressed.compareTo(currDateCompressed) > 0){
-                int startIndex = dateHashFunction(startDate, false);
-                int centerIndex = startIndex+ (48-startIndex)/2;
-                for(int i = startIndex; i<=48; i++){
-                    EventArray[i].setActive(true);
-                    if(i == centerIndex) EventArray[i].setCenter();
-                }
-            }
-
-
-            System.out.println("Current Date is" + currDate.toString());
-            System.out.println("Start Date is: " + startDate.toString());
-            System.out.println(currDate.compareTo(startDate));
-
-
-
-
-            //Log.v("log_tag", "DateE: " + formatter.format(calCursor.getLong(2)));
-            Log.v("log_tag", "RRULE: " + calCursor.getString(3));
-        }
-    }
-
-    public void fillCalendar(){
+    public void fillCalendar(String type){
         final ListView tempList = (ListView) findViewById(R.id.listView);
+        TimeSlot[] tempArray = new TimeSlot[49];
+        if(type.toUpperCase().equals("USER")){
+            tempArray = EventArray;
+        }else if(type.toUpperCase().equals("COMMON")){
+            getCommonArray();
+            tempArray = CommonArray;
+        }else{
+            System.out.println("ERROR IN FILLCALENDAR OF SCHEDULEVIEWACTIVITY");
+        }
 
         // Define a new Adapter
         // First parameter - Context
@@ -251,44 +268,44 @@ public class ScheduleViewActivity extends AppCompatActivity {
         this.currDate = d;
     }
 
-    public int dateHashFunction(Date d, boolean ceiling){
-        /*
-        5:30 = (5*2 = 10) + 1 = 11
-        //ceiling = true = increment
-            1. is the minute mark less than 30?
-                 1. end at h:30
-            2. Otherwise:
-                 1. end at  h+1
-            4:45 = 5:00
-            4:20 = 4:30
-        //ceiling = false = decrement
-            1. Is the minute mark less than 30?
-                1. Start at h
-            2. Otherwise:
-                1. Start at h:30
-            4:45 = 4:30
-            4:14 = 4:00
-         */
-        int hour = d.getHours();
-        int minutes = d.getMinutes();
-
-        if(ceiling == false){
-            if(minutes >= 30){
-                return (hour*2) + 1;
-            }else{
-                return hour*2;
-            }
-        }else{
-            if(minutes > 30){
-                return (hour + 1) *2-1;
-            }else if(minutes == 0){
-                return (hour * 2)-1;
-            }else{
-                return (hour *2);
-            }
-        }
-
-    }
+//    public int dateHashFunction(Date d, boolean ceiling){
+//        /*
+//        5:30 = (5*2 = 10) + 1 = 11
+//        //ceiling = true = increment
+//            1. is the minute mark less than 30?
+//                 1. end at h:30
+//            2. Otherwise:
+//                 1. end at  h+1
+//            4:45 = 5:00
+//            4:20 = 4:30
+//        //ceiling = false = decrement
+//            1. Is the minute mark less than 30?
+//                1. Start at h
+//            2. Otherwise:
+//                1. Start at h:30
+//            4:45 = 4:30
+//            4:14 = 4:00
+//         */
+//        int hour = d.getHours();
+//        int minutes = d.getMinutes();
+//
+//        if(ceiling == false){
+//            if(minutes >= 30){
+//                return (hour*2) + 1;
+//            }else{
+//                return hour*2;
+//            }
+//        }else{
+//            if(minutes > 30){
+//                return (hour + 1) *2-1;
+//            }else if(minutes == 0){
+//                return (hour * 2)-1;
+//            }else{
+//                return (hour *2);
+//            }
+//        }
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
