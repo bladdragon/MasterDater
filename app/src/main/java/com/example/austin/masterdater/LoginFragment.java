@@ -14,6 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +46,10 @@ public class LoginFragment extends Fragment {
     private EditText userPassInput;
     private Button loginButton;
     private Button registerButton;
-    private boolean validUser;
+    public boolean validUser = false;
+    public User thisUser;
+    private Firebase mRef;
+
 
 
     public LoginFragment() {
@@ -75,10 +87,14 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+                // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         userNameInput = (EditText) view.findViewById(R.id.user);
         userPassInput = (EditText) view.findViewById(R.id.pass);
+
+        // add firebase realtime components//
+        Firebase.setAndroidContext(this.getContext());
+        mRef = new Firebase("https://datesync.firebaseio.com/");
 
         TelephonyManager tMgr = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
         userPassInput.setText(tMgr.getLine1Number());
@@ -87,24 +103,47 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validUser = true;
+                validUser = false;
                 userName = userNameInput.getText().toString();
                 userNum = userPassInput.getText().toString();
 
                 //Server code to see if pass userName is userPass
 
-                //Server returns userID if found or null if not found
+                mRef.addValueEventListener(new ValueEventListener() {
 
-                //if return is null then validUser is false still else set validUser to true
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
 
-                if(validUser) {
-                    Intent calendar = new Intent(getActivity(), CalendarActivity.class);
-                    calendar.putExtra(userID, "");
-                    startActivity(calendar);
-                } else {
-                    Toast.makeText(getActivity(), "Invalid Username or Password",
-                            Toast.LENGTH_LONG).show();
-                }
+                            //Server returns userID if found or null if not found
+                            if (userSnapshot.getKey().equals(userNum) && userSnapshot.getValue(User.class).getName().equals(userName)) {
+                                validUser = true;
+                                thisUser = userSnapshot.getValue(User.class);
+
+
+                            }
+                            if(validUser){
+                                Intent calendar = new Intent(getActivity(), CalendarActivity.class);
+                                calendar.putExtra(userID, "");
+                                startActivity(calendar);
+                            }
+                        }
+                        //if return is null then validUser is false
+                        if(!validUser) {
+                            Toast.makeText(getActivity(), "Invalid Username or Password",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                        System.out.println("The read failed: " + firebaseError.getMessage());
+                    }
+                });
+
+//                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                //if return is null then validUser is false
+
             }
         });
         registerButton = (Button) view.findViewById(R.id.registerButton);

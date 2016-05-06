@@ -21,7 +21,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.austin.masterdater.R;import java.lang.Override;import java.lang.String;import java.lang.System;import java.nio.charset.Charset;
+import java.nio.charset.Charset;
+import com.example.austin.masterdater.R;
+import java.lang.Override;
+import java.lang.String;
+import java.lang.System;
 import java.util.Locale;
 
 
@@ -71,22 +75,28 @@ public class NFCActivity extends AppCompatActivity {
 
         // get the user's phone number
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        mUserPhoneNumber = tMgr.getLine1Number();
-        if(mUserPhoneNumber != null){
-        // create an NDEF message with record of user's phone number of plain text type
-        mNdefMessage = new NdefMessage(
-                new NdefRecord[] {
-                        createNewTextRecord(mUserPhoneNumber, Locale.ENGLISH, true) });
+        mUserPhoneNumber = CalendarActivity.getMyNumber();
+        if (mUserPhoneNumber == null) {
+            mUserPhoneNumber = "1234567890";
+        }
 
-        enableNdefExchangeMode();
-    }else{
-        mFeedback_TV.setText("number is null");
+        if(mUserPhoneNumber != null){
+            if(mUserPhoneNumber != null){
+                // create an NDEF message with record of user's phone number of plain text type
+                mNdefMessage = new NdefMessage(
+                        new NdefRecord[] {
+                                createNewTextRecord(mUserPhoneNumber, Locale.ENGLISH, true) });
+
+                enableNdefExchangeMode();
+            }
+        }else{
+            mFeedback_TV.setText("number is null");
             mNdefMessage = new NdefMessage(
                     new NdefRecord[] {
                             createNewTextRecord("1234567890", Locale.ENGLISH, true) });
 
             enableNdefExchangeMode();
-    }}
+        }}
 
     private void enableNdefExchangeMode() {
 
@@ -123,9 +133,22 @@ public class NFCActivity extends AppCompatActivity {
             // fireFriendRequest(msgs[0]); //TODO
             // this is where we send the message to the backend
 
-
-            mFeedback_TV.setText("NFC connection successful with " + msgs[0]); //TODO
-            Toast.makeText(this, "Added friend via nfc!", Toast.LENGTH_LONG).show();
+            NdefRecord[] recs = msgs[0].getRecords();
+            byte[] number = recs[0].getPayload();
+            String numberEncoding;
+            if ((number[0] & 128) != 0) numberEncoding = "UTF-16";
+            else numberEncoding = "UTF-8";
+            int languageCodeLength = number[0] & 0063;
+            String friendNumber = "";
+            try {
+                friendNumber = new String(number, languageCodeLength + 1, number.length - languageCodeLength - 1, numberEncoding);
+            }catch(Exception e){
+                friendNumber = "Error";
+            }
+            //mFeedback_TV.setText("NFC connection successful with " + friendNumber); //TODO
+            CalendarActivity.setFriendNumber(friendNumber);
+            Toast.makeText(this, "Added " + friendNumber + " via nfc!", Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 

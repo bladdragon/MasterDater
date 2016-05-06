@@ -325,7 +325,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         int itemID = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (itemID == 0 && id == R.id.action_settings) {
-            final Intent transaction = new Intent(this, CalendarView.class);
+            final Intent transaction = new Intent(this, NFCActivity.class);
             startActivity(transaction);
 
             return true;
