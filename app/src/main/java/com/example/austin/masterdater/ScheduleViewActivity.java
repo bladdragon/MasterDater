@@ -38,11 +38,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     public TimeSlot[] EventArray;
     public TimeSlot[] CommonArray;
-    private static TextView textview;
+    private TextView syncedUser;
     Date currDate;
     Calendar c;
     Button incrementButton;
     Button decrementButton;
+    private Button syncButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
+        syncedUser = (TextView) findViewById(R.id.currentFriendView);
+        syncButton = (Button) findViewById(R.id.syncButton);
         final DateSwitcher DS = new DateSwitcher();
         FragmentManager FM = getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();
@@ -87,7 +91,17 @@ public class ScheduleViewActivity extends AppCompatActivity {
         EventArray = CalendarActivity.getEvents(currDate, "user");
       //  getEvents();
 
+
         fillCalendar("user");
+
+        syncButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO call their sync method
+                Toast.makeText(v.getContext(), "Added ", Toast.LENGTH_LONG).show();
+                fillCalendar("COMMON");
+            }
+        });
     }
 
     public void getCommonArray(){
@@ -346,6 +360,15 @@ public class ScheduleViewActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!CalendarActivity.getFriendNumber().equals("")){
+            syncedUser.setText("Ready to sync with: " + CalendarActivity.getFriendNumber());
+        }
+
     }
 }
 
