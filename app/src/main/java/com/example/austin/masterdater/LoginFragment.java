@@ -104,7 +104,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 validUser = false;
-                userName = userNameInput.getText().toString();
+                userName = userNameInput.getText().toString().toLowerCase();
                 userNum = userPassInput.getText().toString();
 
                 //Server code to see if pass userName is userPass
@@ -124,7 +124,7 @@ public class LoginFragment extends Fragment {
                             }
                             if(validUser){
                                 Intent calendar = new Intent(getActivity(), CalendarActivity.class);
-                                calendar.putExtra(userID, "");
+                                CalendarActivity.setMyNumber(userNum);
                                 startActivity(calendar);
                             }
                         }

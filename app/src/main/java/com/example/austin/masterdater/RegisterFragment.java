@@ -95,12 +95,10 @@ public class RegisterFragment extends Fragment {
         Firebase.setAndroidContext(this.getContext());
         mRef = new Firebase("https://datesync.firebaseio.com/");
 
-        mRef.child("9206805652").child("calendarEventList").setValue(new Date(2017, 5, 5));
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = userName.getText().toString();
+                user = userName.getText().toString().toLowerCase();
                 number = phoneNumber.getText().toString();
 
                     //add user to server
