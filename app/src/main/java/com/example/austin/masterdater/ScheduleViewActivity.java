@@ -314,6 +314,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         menu.clear();
         menu.add(R.id.action_NFC, 0, 100, "Add by NFC");
         menu.add(R.id.action_contacts, 0,100, "Add by Contacts");
+        menu.add(R.id.action_settings, 0, 100, "Return to Calendar");
 
         return true;
     }
@@ -335,6 +336,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
         if (itemID == 0 && id == R.id.action_contacts) {
             final Intent transaction = new Intent(this, ShareByContactsActivity.class);
             startActivity(transaction);
+
+            return true;
+        }
+        if (itemID == 0 && id == R.id.action_settings) {
+            finish();
 
             return true;
         }
