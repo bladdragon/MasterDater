@@ -94,13 +94,13 @@ public class ShareByContactsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
 
         addByContacts = (TextView) view.findViewById(R.id.addByContacts_textView);
-        contactList = (ListView) view.findViewById(R.id.contacts_listView);
-        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: add contact functionality here
-            }
-        });
+//        contactList = (ListView) view.findViewById(R.id.contacts_listView);
+//        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //TODO: add contact functionality here
+//            }
+//        });
        
         return view;
     }
@@ -116,9 +116,9 @@ public class ShareByContactsFragment extends Fragment {
                     Cursor c =  getActivity().getContentResolver().query(contactData, null, null, null, null);
                     if (c.moveToFirst()) {
                         String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                        String phoneNum;
+                        String friendPhoneNum = "0";
                         if (Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) >0) {
-                            phoneNum = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                            friendPhoneNum = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         }
                         // TODO Whatever you want to do with the selected contact name.
                     }
