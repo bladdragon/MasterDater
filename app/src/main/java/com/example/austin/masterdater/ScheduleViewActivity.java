@@ -60,9 +60,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
         syncedUser = (TextView) findViewById(R.id.currentFriendView);
         syncButton = (Button) findViewById(R.id.syncButton);
+
         final DateSwitcher DS = new DateSwitcher();
         FragmentManager FM = getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();
@@ -80,16 +80,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         FT.add(R.id.detailFragment, DS);
         FT.commit();
 
-//
-//        for (int i = 0; i < EventArray.length; i++) {
-//            if (i % 2 == 1) {
-//                EventArray[i] = new TimeSlot(new Time(i / 2, 30, 0), false);
-//            } else {
-//                EventArray[i] = new TimeSlot(new Time(i / 2, 0, 0), false);
-//            }
-//        }
         EventArray = CalendarActivity.getEvents(currDate, "user");
-      //  getEvents();
 
 
         fillCalendar("user");
@@ -106,6 +97,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     public void getCommonArray(){
         TimeSlot[] FriendArray = CalendarActivity.getEvents(currDate, "friend");
+
         CommonArray = new TimeSlot[49];
         for (int i = 0; i < CommonArray.length; i++) {
             if (i % 2 == 1) {

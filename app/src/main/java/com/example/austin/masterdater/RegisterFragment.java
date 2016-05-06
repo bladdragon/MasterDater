@@ -102,7 +102,7 @@ public class RegisterFragment extends Fragment {
                 number = phoneNumber.getText().toString();
 
                     //add user to server
-                List<Date> dates = new ArrayList<Date>();
+                ArrayList<Date> dates = new ArrayList<Date>();
                 dates.add(new Date());
                 User thisUser = new User(user, number,dates);
 

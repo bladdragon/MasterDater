@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -30,6 +31,10 @@ import android.view.MotionEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 
 //http://stackoverflow.com/questions/29292689/calendarview-in-android
@@ -40,8 +45,11 @@ public class CalendarActivity extends AppCompatActivity {
     Long date;
     static ArrayList<EventKeeper> EventList = new ArrayList<EventKeeper>();
     static ArrayList<EventKeeper> FriendEventList = new ArrayList<EventKeeper>();
+    static private User userFriend;
+    static private Firebase mRef;
     private static String MyNumber = "";
     private static String FriendNumber = "";
+
 
     public static void setFriendNumber(String friendNumber) {
         FriendNumber = friendNumber;
@@ -68,7 +76,6 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
        // View contentView = findViewById(R.id.ContentMain1);
         calendar=(CalendarView) findViewById(R.id.calendarView1);
-        getEvents();
         date = calendar.getDate();
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
@@ -96,18 +103,10 @@ public class CalendarActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
+        Firebase.setAndroidContext(this);
+        mRef = new Firebase("https://datesync.firebaseio.com");
+        getEvents();
     }
-
 
 
     @Override
@@ -146,12 +145,13 @@ public class CalendarActivity extends AppCompatActivity {
 
 
     public void getEvents() {
+
         ArrayList<Date> pushArray = new ArrayList<Date>();
         Cursor calCursor;
         ContentResolver contentResolver = this.getContentResolver();
         String[] proj = new String[]{CalendarContract.Events._ID, CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND, CalendarContract.Events.RRULE, CalendarContract.Events.TITLE};
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
+            //Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -166,7 +166,7 @@ public class CalendarActivity extends AppCompatActivity {
         while (calCursor.moveToNext()) {
             String title = calCursor.getString(4);
             long beginVal = calCursor.getLong(1);
-            //TODO:(1) GO through all events.(2)Add events with current date into array.
+            //(1) GO through all events.(2)Add events with current date into array.
 
             Calendar calendar2 = Calendar.getInstance();
             calendar2.setTimeInMillis(beginVal);
@@ -181,27 +181,41 @@ public class CalendarActivity extends AppCompatActivity {
             //PUSH OUT THE PUSH ARRAY
 
             EventList.add(new EventKeeper(startDate, endDate, title));
-            System.out.println(startDate.toString() + " " + endDate.toString() + " " + title);
         }
-        //TODO: push "PUSHARRAY" to the server here
-
-
-        /////////////////////////////////////
+        // push "PUSHARRAY" to the server here/////////////////
+        User thisUser = LoginFragment.getThisUser();
+        thisUser.setCalendarEventList(pushArray);
+        mRef.child(thisUser.getPhoneNumber()).setValue(thisUser);
+        ///////////////////////////////////////////////////////////
     }
 
     public static void getFriendEvents(){
-        //TODO: Uninitialize!
-        ArrayList<Date> receivedArray = new ArrayList<Date>();
-        ///API CALLS
-            //TODO
-        ////////////
+        //User userFriend = LoginFragment.getThisUser();
+        mRef.addValueEventListener(new ValueEventListener() {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot friendSnapshot : dataSnapshot.getChildren()){
+                    if(friendSnapshot.getKey().equals(FriendNumber)){
+                        System.out.println("Austin: " + "we got into the loop");
+                        ArrayList<Date> receivedArray123 = new ArrayList<Date>();
+                        userFriend = friendSnapshot.getValue(User.class);
+                       receivedArray123 = userFriend.getCalendarEventList();
 
-        for(int i = 0; i< receivedArray.size(); i++){
-            Date start = receivedArray.get(i);
-            i++;
-            Date end = receivedArray.get(i);
-            FriendEventList.add(new EventKeeper(start, end));
-        }
+                        for(int i = 0; i< receivedArray123.size(); i++){
+                            Date start = receivedArray123.get(i);
+                            i++;
+                            Date end = receivedArray123.get(i);
+                            FriendEventList.add(new EventKeeper(start, end));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
     }
 
     public static void clearFriendList(){
