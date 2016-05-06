@@ -1,68 +1,108 @@
 package com.example.austin.masterdater;
 
-import android.content.res.Resources;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.Toast;
+import android.widget.ListView;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.ArrayList;
+import android.view.MotionEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.http.DELETE;
-import retrofit2.http.GET;
 
 
-/**
- * Created by Austin on 3/26/2016.
- */
-public class CalendarActivity  extends AppCompatActivity {
 
-    private ArrayList<CalendarEvent> EventList;
-    private CustomAdapter adapter;
+//http://stackoverflow.com/questions/29292689/calendarview-in-android
+public class CalendarActivity extends AppCompatActivity {
+    Calendar cal;
+    private CalendarView calendar;
+    Long date;
+    private static String MyNumber;
+    private static String FriendNumber;
+
+    public static void setFriendNumber(String friendNumber) {
+        FriendNumber = friendNumber;
+
+    }
+
+    public static void setMyNumber(String myNumber) {
+        MyNumber = myNumber;
+    }
+
+    public static String getFriendNumber() {
+        return FriendNumber;
+    }
+
+    public static String getMyNumber() {
+        return MyNumber;
+    }
+
+//////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Intent transaction = new Intent(this, ScheduleViewActivity.class);
         setContentView(R.layout.activity_calendar);
+        // View contentView = findViewById(R.id.ContentMain1);
+        calendar=(CalendarView) findViewById(R.id.calendarView1);
+        date = calendar.getDate();
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        ActionBar ab = getSupportActionBar();
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                System.out.println(date);
+                System.out.println(calendar.getDate());
+                //if(calendar.getDate() != date){
+                //date = calendar.getDate(); //new current date
+                //date is changed on real click...do things.
+                cal = new GregorianCalendar(year, month, dayOfMonth);
+                Date temp1 = cal.getTime();
 
-        ab.setDisplayHomeAsUpEnabled(true);
+                //Sends a message to the final activity that includes the final score
+                //Passes onto the final activity.
 
-        EventList = new ArrayList<>();
-        adapter = new CustomAdapter(this, EventList);
+                transaction.putExtra("MESSAGE", temp1.getTime());
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer2, CalendarFragment.newInstance(null, null))
-                .addToBackStack(null)
-                .commit();
+                startActivity(transaction);
+
+                //}
+            }
+        });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.clear();
+        menu.add(R.id.action_settings, 0,100, "Calendar");
         return true;
     }
 
@@ -71,125 +111,29 @@ public class CalendarActivity  extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        int id = item.getGroupId();
+        int itemID = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (itemID == 0 && id == R.id.action_settings) {
+            final Intent transaction = new Intent(this, ScheduleViewActivity.class);
+            Calendar tempCal = Calendar.getInstance();
+            Date temp1 = tempCal.getTime();
 
-        switch (item.getItemId()) {
+            //Sends a message to the final activity that includes the final score
+            //Passes onto the final activity.
 
-            case R.id.action_NFC:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer2, NFCFragment.newInstance(null, null))
-                        .addToBackStack(null)
-                        .commit();
-                return true;
+            transaction.putExtra("MESSAGE", temp1.getTime());
+            startActivity(transaction);
 
-            case R.id.action_contacts:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragmentContainer2, ShareByContactsFragment.newInstance(null, null))
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
-
-
-    private void getCalendarEventsRetro(String username, int password){
-
-        //create the REST client
-        CalendarClient calendarService = ServiceGenerator.createService(CalendarClient.class);
-        Call<List<CalendarEvent>> call = calendarService.Events();
-
-        call.enqueue(new Callback<List<CalendarEvent>>() {
-
-            @Override
-            public void onResponse(Call<List<CalendarEvent>> call, Response<List<CalendarEvent>> response) {
-                if (response.isSuccess()) {
-                    Log.d("HTTP_GET_RESPONSE", response.raw().toString());
-                    EventList.addAll(response.body());
-
-                } else {
-                    // error response, no access to resource?
-                    Log.d("HTTP_GET_RESPONSE", response.raw().toString());
-
-                    //TODO do something to say you got nothing back, maybe not
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CalendarEvent>> call, Throwable t) {
-                // something went completely south (like no internet connection)
-                Log.d("Error", t.getMessage());
-
-                //TODO do something to handle failure
-
-            }
-        });
-    }
-
-    public void deleteCalendarEvent(CalendarEvent calendarEvent){
-//        Long i = calendarEvent.getId();
-
-      //  @DELETE(i)
-
-    }
-
-//    private void testCase1(){
-//        //fetch backend stuffs using some s
-//        Gson gson = new GsonBuilder().create();
-//        CalendarEvent CalendarEvents = gson.fromJson(readJSON(getResources(), R.raw.simple_json), CalendarEvent.class);
-//        if(CalendarEvents == null){
-//            Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
-//        }else {
-//            EventList.add(CalendarEvents);
-//            adapter.notifyDataSetChanged();
-//        }
-//
-//    }
-//
-//    private void testCase2(){
-//        Gson gson = new GsonBuilder().create();
-//        CalendarEvent[] CalendarEvents = gson.fromJson(readJSON(getResources(), R.raw.multi_json), CalendarEvent[].class);
-//        if(CalendarEvents == null){
-//            Toast.makeText(this, "DIDN'T WORK", Toast.LENGTH_SHORT).show();
-//        }else {
-//            EventList.addAll(Arrays.asList(CalendarEvents));
-//            adapter.notifyDataSetChanged();
-//        }
-//
-//    }
-
-    /**
-     * Read from a resources file and create a object that will allow the creation of other
-     * objects from this resource.
-     *
-     * @param resources An application {@link Resources} object.
-     * @param id The id for the resource to load, typically held in the raw/ folder.
-     */
-    public String readJSON(Resources resources, int id) {
-        InputStream inputStream = resources.openRawResource(id);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        int ctr;
-        try {
-            ctr = inputStream.read();
-            while (ctr != -1) {
-                byteArrayOutputStream.write(ctr);
-                ctr = inputStream.read();
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            return true;
         }
 
-        return byteArrayOutputStream.toString();
+        return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Toast.makeText(this, getFriendNumber(), Toast.LENGTH_LONG).show();
+    }
 }
