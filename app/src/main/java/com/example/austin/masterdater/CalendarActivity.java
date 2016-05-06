@@ -27,22 +27,23 @@ public class CalendarActivity extends AppCompatActivity {
     Calendar cal;
     private CalendarView calendar;
     Long date;
-    private String MyNumber;
-    private String FriendNumber;
+    private static String MyNumber;
+    private static String FriendNumber;
 
-    public void setFriendNumber(String friendNumber) {
+    public static void setFriendNumber(String friendNumber) {
         FriendNumber = friendNumber;
+
     }
 
-    public void setMyNumber(String myNumber) {
+    public static void setMyNumber(String myNumber) {
         MyNumber = myNumber;
     }
 
-    public String getFriendNumber() {
+    public static String getFriendNumber() {
         return FriendNumber;
     }
 
-    public String getMyNumber() {
+    public static String getMyNumber() {
         return MyNumber;
     }
 
@@ -130,6 +131,9 @@ public class CalendarActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, getFriendNumber(), Toast.LENGTH_LONG).show();
+    }
 }

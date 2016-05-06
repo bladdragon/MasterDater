@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class ShareByContactsFragment extends Fragment {
     private ArrayAdapter<String> contactAdapter;
     private String[] contactStringArray;
     private final int PICK_CONTACT = 100;
+
 
 
     // TODO: Rename and change types of parameters
@@ -106,7 +108,7 @@ public class ShareByContactsFragment extends Fragment {
                         if (Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) >0) {
                             friendPhoneNum = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         }
-                        // TODO Whatever you want to do with the selected contact name.
+                        CalendarActivity.setFriendNumber(friendPhoneNum);
                     }
                 }
                 break;
