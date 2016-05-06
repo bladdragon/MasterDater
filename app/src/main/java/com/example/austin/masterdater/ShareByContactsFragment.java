@@ -51,6 +51,7 @@ public class ShareByContactsFragment extends Fragment {
     private Button contactsButton;
 
 
+
     public ShareByContactsFragment() {
         // Required empty public constructor
     }
@@ -101,12 +102,6 @@ public class ShareByContactsFragment extends Fragment {
         super.onActivityResult(reqCode, resultCode, data);
         String friendPhoneNum = "";
 
-
-
-
-
-
-
         switch (reqCode) {
             case (PICK_CONTACT) :
                 if (resultCode == Activity.RESULT_OK) {
@@ -155,5 +150,4 @@ public class ShareByContactsFragment extends Fragment {
                 break;
         }
     }
-
 }

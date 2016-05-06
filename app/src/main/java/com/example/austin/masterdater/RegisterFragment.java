@@ -98,7 +98,7 @@ public class RegisterFragment extends Fragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = userName.getText().toString();
+                user = userName.getText().toString().toLowerCase();
                 number = phoneNumber.getText().toString();
 
                     //add user to server

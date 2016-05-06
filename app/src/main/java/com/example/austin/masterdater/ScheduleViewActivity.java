@@ -38,17 +38,34 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     public TimeSlot[] EventArray;
     public TimeSlot[] CommonArray;
-    private static TextView textview;
+    private TextView syncedUser;
     Date currDate;
     Calendar c;
     Button incrementButton;
     Button decrementButton;
+    private Button syncButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+<<<<<<< HEAD
+=======
+//        setSupportActionBar(toolbar);
+
+//               FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+
+        syncedUser = (TextView) findViewById(R.id.currentFriendView);
+        syncButton = (Button) findViewById(R.id.syncButton);
+>>>>>>> refs/remotes/origin/master
         final DateSwitcher DS = new DateSwitcher();
         FragmentManager FM = getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();
@@ -68,7 +85,17 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         EventArray = CalendarActivity.getEvents(currDate, "user");
 
+
         fillCalendar("user");
+
+        syncButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO call their sync method
+                Toast.makeText(v.getContext(), "Added ", Toast.LENGTH_LONG).show();
+                fillCalendar("COMMON");
+            }
+        });
     }
 
     public void getCommonArray(){
@@ -294,7 +321,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.clear();
-        menu.add(R.id.action_settings, 0,100, "Calendar");
+        menu.add(R.id.action_NFC, 0, 100, "Add by NFC");
+        menu.add(R.id.action_contacts, 0,100, "Add by Contacts");
+        menu.add(R.id.action_settings, 0, 100, "Return to Calendar");
+
         return true;
     }
 
@@ -306,14 +336,34 @@ public class ScheduleViewActivity extends AppCompatActivity {
         int id = item.getGroupId();
         int itemID = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (itemID == 0 && id == R.id.action_settings) {
+        if (itemID == 0 && id == R.id.action_NFC) {
             final Intent transaction = new Intent(this, NFCActivity.class);
             startActivity(transaction);
 
             return true;
         }
+        if (itemID == 0 && id == R.id.action_contacts) {
+            final Intent transaction = new Intent(this, ShareByContactsActivity.class);
+            startActivity(transaction);
+
+            return true;
+        }
+        if (itemID == 0 && id == R.id.action_settings) {
+            finish();
+
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!CalendarActivity.getFriendNumber().equals("")){
+            syncedUser.setText("Ready to sync with: " + CalendarActivity.getFriendNumber());
+        }
+
     }
 }
 
