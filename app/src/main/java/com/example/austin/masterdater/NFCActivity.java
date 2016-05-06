@@ -75,7 +75,7 @@ public class NFCActivity extends AppCompatActivity {
 
         // get the user's phone number
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        mUserPhoneNumber = tMgr.getLine1Number();
+        mUserPhoneNumber = CalendarActivity.getMyNumber();
         if (mUserPhoneNumber == null) {
             mUserPhoneNumber = "1234567890";
         }
@@ -133,9 +133,22 @@ public class NFCActivity extends AppCompatActivity {
             // fireFriendRequest(msgs[0]); //TODO
             // this is where we send the message to the backend
 
-
-            mFeedback_TV.setText("NFC connection successful with " + msgs[0]); //TODO
-            Toast.makeText(this, "Added friend via nfc!", Toast.LENGTH_LONG).show();
+            NdefRecord[] recs = msgs[0].getRecords();
+            byte[] number = recs[0].getPayload();
+            String numberEncoding;
+            if ((number[0] & 128) != 0) numberEncoding = "UTF-16";
+            else numberEncoding = "UTF-8";
+            int languageCodeLength = number[0] & 0063;
+            String friendNumber = "";
+            try {
+                friendNumber = new String(number, languageCodeLength + 1, number.length - languageCodeLength - 1, numberEncoding);
+            }catch(Exception e){
+                friendNumber = "Error";
+            }
+            //mFeedback_TV.setText("NFC connection successful with " + friendNumber); //TODO
+            CalendarActivity.setFriendNumber(friendNumber);
+            Toast.makeText(this, "Added " + friendNumber + " via nfc!", Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
