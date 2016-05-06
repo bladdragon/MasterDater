@@ -115,7 +115,8 @@ public class CalendarActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.clear();
-        menu.add(R.id.action_settings, 0,100, "Calendar");
+        menu.add(R.id.action_NFC, 0, 100, "Add by NFC");
+        menu.add(R.id.action_contacts, 0,100, "Add by Contacts");
         return true;
     }
 
@@ -127,15 +128,14 @@ public class CalendarActivity extends AppCompatActivity {
         int id = item.getGroupId();
         int itemID = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (itemID == 0 && id == R.id.action_settings) {
-            final Intent transaction = new Intent(this, ScheduleViewActivity.class);
-            Calendar tempCal = Calendar.getInstance();
-            Date temp1 = tempCal.getTime();
+        if (itemID == 0 && id == R.id.action_NFC) {
+            final Intent transaction = new Intent(this, NFCActivity.class);
+            startActivity(transaction);
 
-            //Sends a message to the final activity that includes the final score
-            //Passes onto the final activity.
-
-            transaction.putExtra("MESSAGE", temp1.getTime());
+            return true;
+        }
+        if (itemID == 0 && id == R.id.action_contacts) {
+            final Intent transaction = new Intent(this, ShareByContactsActivity.class);
             startActivity(transaction);
 
             return true;
