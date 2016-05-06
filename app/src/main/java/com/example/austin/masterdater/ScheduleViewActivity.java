@@ -99,6 +99,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //TODO call their sync method
                 Toast.makeText(v.getContext(), "Added ", Toast.LENGTH_LONG).show();
+                fillCalendar("COMMON");
             }
         });
     }
