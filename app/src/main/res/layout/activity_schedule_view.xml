@@ -26,17 +26,18 @@
         android:layout_height="0dp"
         android:divider="@null"
         android:id="@+id/listView"
-        android:layout_weight=".65"/>
+        android:layout_weight=".67"/>
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="@string/currentUser"
-        android:textSize="26sp"
+        android:textSize="18sp"
         android:gravity="center"
         android:id="@+id/currentFriendView"
-        android:layout_weight=".1"
+        android:layout_weight=".08"
+        android:background="#ddddee"
         />
 
 
