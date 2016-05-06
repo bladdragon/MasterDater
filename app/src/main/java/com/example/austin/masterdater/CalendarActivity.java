@@ -134,6 +134,6 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, getFriendNumber(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, getFriendNumber(), Toast.LENGTH_LONG).show();
     }
 }
