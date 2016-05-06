@@ -21,11 +21,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
 import java.nio.charset.Charset;
-=======
-import com.example.austin.masterdater.R;import java.lang.Override;import java.lang.String;import java.lang.System;import java.nio.charset.Charset;
->>>>>>> origin/master
+import com.example.austin.masterdater.R;
+import java.lang.Override;
+import java.lang.String;
+import java.lang.System;
 import java.util.Locale;
 
 
@@ -76,32 +76,27 @@ public class NFCActivity extends AppCompatActivity {
         // get the user's phone number
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
         mUserPhoneNumber = tMgr.getLine1Number();
-<<<<<<< HEAD
         if (mUserPhoneNumber == null) {
             mUserPhoneNumber = "1234567890";
         }
 
-=======
         if(mUserPhoneNumber != null){
->>>>>>> origin/master
-        // create an NDEF message with record of user's phone number of plain text type
-        mNdefMessage = new NdefMessage(
-                new NdefRecord[] {
-                        createNewTextRecord(mUserPhoneNumber, Locale.ENGLISH, true) });
+            if(mUserPhoneNumber != null){
+                // create an NDEF message with record of user's phone number of plain text type
+                mNdefMessage = new NdefMessage(
+                        new NdefRecord[] {
+                                createNewTextRecord(mUserPhoneNumber, Locale.ENGLISH, true) });
 
-        enableNdefExchangeMode();
-<<<<<<< HEAD
-    }
-=======
-    }else{
-        mFeedback_TV.setText("number is null");
+                enableNdefExchangeMode();
+            }
+        }else{
+            mFeedback_TV.setText("number is null");
             mNdefMessage = new NdefMessage(
                     new NdefRecord[] {
                             createNewTextRecord("1234567890", Locale.ENGLISH, true) });
 
             enableNdefExchangeMode();
-    }}
->>>>>>> origin/master
+        }}
 
     private void enableNdefExchangeMode() {
 
