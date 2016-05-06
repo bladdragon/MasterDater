@@ -1,5 +1,6 @@
 package com.example.austin.masterdater;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,13 +17,13 @@ public class User {
 
     /** Used for active entity operations. */
 //    private List<CalendarEvent> calendarEventList;
-    private List<Date> calendarEventList;
+    private ArrayList<Date> calendarEventList;
 
     public User() {
     }
 
 
-    public User(String Name, String PhoneNumber, List<Date> ce) {
+    public User(String Name, String PhoneNumber, ArrayList<Date> ce) {
         this.Name = Name;
         this.PhoneNumber = PhoneNumber;
         this.calendarEventList = ce;
@@ -45,13 +46,15 @@ public class User {
         this.PhoneNumber = PhoneNumber;
     }
 
-    public List<Date> getCalendarEventList(){
+    public ArrayList<Date> getCalendarEventList(){
         return this.calendarEventList;
     }
 
     public void addCalendarEvent(Date d){
          calendarEventList.add(d);
     }
+
+    public void setCalendarEventList(ArrayList<Date> D) { this.calendarEventList = D;}
 
 
 

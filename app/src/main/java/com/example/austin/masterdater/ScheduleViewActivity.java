@@ -49,16 +49,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-//               FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         final DateSwitcher DS = new DateSwitcher();
         FragmentManager FM = getFragmentManager();
         FragmentTransaction FT = FM.beginTransaction();
@@ -76,22 +66,14 @@ public class ScheduleViewActivity extends AppCompatActivity {
         FT.add(R.id.detailFragment, DS);
         FT.commit();
 
-//
-//        for (int i = 0; i < EventArray.length; i++) {
-//            if (i % 2 == 1) {
-//                EventArray[i] = new TimeSlot(new Time(i / 2, 30, 0), false);
-//            } else {
-//                EventArray[i] = new TimeSlot(new Time(i / 2, 0, 0), false);
-//            }
-//        }
         EventArray = CalendarActivity.getEvents(currDate, "user");
-      //  getEvents();
 
         fillCalendar("user");
     }
 
     public void getCommonArray(){
         TimeSlot[] FriendArray = CalendarActivity.getEvents(currDate, "friend");
+
         CommonArray = new TimeSlot[49];
         for (int i = 0; i < CommonArray.length; i++) {
             if (i % 2 == 1) {

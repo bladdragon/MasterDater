@@ -47,7 +47,7 @@ public class LoginFragment extends Fragment {
     private Button loginButton;
     private Button registerButton;
     public boolean validUser = false;
-    public User thisUser;
+    public static User thisUser;
     private Firebase mRef;
 
 
@@ -73,6 +73,9 @@ public class LoginFragment extends Fragment {
         return fragment;
     }
 
+    public static User getThisUser(){
+        return thisUser;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,7 +112,7 @@ public class LoginFragment extends Fragment {
 
                 //Server code to see if pass userName is userPass
 
-                mRef.addValueEventListener(new ValueEventListener() {
+                mRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -122,14 +125,14 @@ public class LoginFragment extends Fragment {
 
 
                             }
-                            if(validUser){
+                            if (validUser) {
                                 Intent calendar = new Intent(getActivity(), CalendarActivity.class);
                                 calendar.putExtra(userID, "");
                                 startActivity(calendar);
                             }
                         }
                         //if return is null then validUser is false
-                        if(!validUser) {
+                        if (!validUser) {
                             Toast.makeText(getActivity(), "Invalid Username or Password",
                                     Toast.LENGTH_LONG).show();
                         }
