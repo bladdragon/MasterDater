@@ -40,22 +40,22 @@ public class CalendarActivity extends AppCompatActivity {
     Long date;
     static ArrayList<EventKeeper> EventList = new ArrayList<EventKeeper>();
     static ArrayList<EventKeeper> FriendEventList = new ArrayList<EventKeeper>();
-    private String MyNumber;
-    private String FriendNumber;
+    private static String MyNumber;
+    private static String FriendNumber;
 
-    public void setFriendNumber(String friendNumber) {
+    public static void setFriendNumber(String friendNumber) {
         FriendNumber = friendNumber;
     }
 
-    public void setMyNumber(String myNumber) {
+    public static void setMyNumber(String myNumber) {
         MyNumber = myNumber;
     }
 
-    public String getFriendNumber() {
+    public static String getFriendNumber() {
         return FriendNumber;
     }
 
-    public String getMyNumber() {
+    public static String getMyNumber() {
         return MyNumber;
     }
 
