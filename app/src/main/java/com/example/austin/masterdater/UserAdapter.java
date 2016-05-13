@@ -13,7 +13,7 @@ import android.content.Context;
 
 public class UserAdapter extends ArrayAdapter<TimeSlot> {
 
-    private int[] colors = new int[] { Color.parseColor("#F0F0F0"), Color.parseColor("#D2E4FC"), Color.parseColor("#A9A9A9") };
+    public int[] colors = new int[] { Color.parseColor("#F0F0F0"), Color.parseColor("#D2E4FC"), Color.parseColor("#A9A9A9") };
 
     public UserAdapter(Context context, ArrayList<TimeSlot> users) {
         super(context, 0, users);
